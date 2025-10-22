@@ -22,32 +22,34 @@ export default function DayCell({ day, currentMonth, selectedDate, onSelect, has
       onClick={() => onSelect(day)}
       role="button"
       className={clsx(
-        "relative day-cell h-16 flex items-center justify-center select-none cursor-pointer transition-transform transform",
-        "rounded-xl",
-        "bg-gray-100",
+        "relative flex items-center justify-center select-none cursor-pointer transition-transform transform",
+        "rounded-2xl shadow-md",
         !isSameMonth(day, currentMonth) && "opacity-40",
         "hover:scale-105",
-        selected && "bg-primary text-white shadow-lg",
-        isToday && !selected && "bg-blue-200 text-white font-bold"
+        "text-black",
+        selected && !isToday && isPast && "bg-gray-100 border-4 border-red-400",
+        selected && !isToday && !isPast&& "bg-gray-100 border-4 border-blue-300",
+        selected && isToday && "bg-blue-200 font-bold border-4 border-blue-300",
+        isToday && !selected && "bg-blue-200 font-bold border-blue-300",
+        !isToday && !selected && "bg-gray-100",
+        "w-full h-full shrink-0"
       )}
     >
-      {/* day number */}
-      <div className="z-10 text-sm">{format(day, "d")}</div>
+      {/* Número do dia */}
+      <div className="z-30 text-[2vw] sm:text-xl md:text-2xl lg:text-5xl font-bold flex items-center justify-center">
+        {format(day, "d")}
+      </div>
 
-      {/* small task dot */}
+      {/* Pontinho de tarefa */}
       {hasTasks && (
-        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full bg-blue-600 z-10" />
+        <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-3 h-3 rounded-full bg-blue-600 z-10" />
       )}
 
-      {/* X overlay for past days */}
       {isPast && (
-        <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-          <span className="text-3xl day-x opacity-90">✕</span>
+        <div className="absolute inset-0 flex items-center justify-center z-40 pointer-events-none">
+          <span className="text-[3vw] sm:text-2xl md:text-3xl lg:text-6xl font-bold text-red-400 opacity-90">✕</span>
         </div>
       )}
-
-      {/* subtle shadow border */}
-      <div className="absolute -bottom-1 -right-1 w-full h-full rounded-xl pointer-events-none" />
     </div>
   );
 }

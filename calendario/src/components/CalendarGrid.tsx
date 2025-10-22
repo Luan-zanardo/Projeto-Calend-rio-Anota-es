@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import DayCell from "./DayCell";
-import { isSameMonth, isSameDay } from "date-fns";
 
 export default function CalendarGrid({
   days,
@@ -12,15 +11,33 @@ export default function CalendarGrid({
 }: any) {
   const weekDays = ["DOMINGO","SEGUNDA","TERCA","QUARTA","QUINTA","SEXTA","SABADO"];
 
+  // Calcula número de linhas do mês (4, 5 ou 6)
+  const numRows = Math.ceil(days.length / 7);
+
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-7 gap-3 mb-2">
+    <div className="flex flex-col h-full">
+      {/* Cabeçalho dias da semana */}
+      <div className="grid grid-cols-7 gap-3 mb-3 shrink-0">
         {weekDays.map(w => (
-          <div key={w} className="text-center text-xs text-gray-500 font-semibold">{w}</div>
+          <div
+            key={w}
+            className="
+              text-center 
+              text-[0.6rem] sm:text-xs md:text-sm lg:text-base xl:text-lg
+              font-semibold 
+              text-gray-500
+            "
+          >
+            {w}
+          </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-4">
+      {/* Grid de dias */}
+      <div
+        className="grid grid-cols-7 gap-3 flex-1"
+        style={{ gridTemplateRows: `repeat(${numRows}, 1fr)` }} // ⚡ altura ajustável
+      >
         {days.map((d: Date) => (
           <DayCell
             key={d.toISOString()}
