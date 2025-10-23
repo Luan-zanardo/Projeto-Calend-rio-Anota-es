@@ -13,12 +13,10 @@ export default function Page() {
   const [days, setDays] = useState<Date[]>([]);
   const [tasks, setTasks] = useState<Record<string, Task[]>>({});
 
-  // Inicializa mês e carrega tarefas do localStorage
   useEffect(() => {
     const now = new Date();
     setCurrentMonth(now);
     setSelectedDate(now);
-
     const raw = localStorage.getItem("calendar_tasks_v1");
     if (raw) {
       try {
@@ -29,18 +27,15 @@ export default function Page() {
     }
   }, []);
 
-  // Atualiza dias quando o mês muda
   useEffect(() => {
     if (!currentMonth) return;
     setDays(getCalendarDays(currentMonth));
   }, [currentMonth]);
 
-  // Salva tarefas no localStorage
   useEffect(() => {
     localStorage.setItem("calendar_tasks_v1", JSON.stringify(tasks));
   }, [tasks]);
 
-  // Adiciona tarefa
   const handleAddTask = (text: string, description?: string) => {
     if (!selectedDate) return;
     const key = format(selectedDate, "yyyy-MM-dd");
@@ -51,7 +46,6 @@ export default function Page() {
     }));
   };
 
-  // Alterna tarefa feita/não feita
   const handleToggleDone = (dateKey: string, id: string) => {
     setTasks((prev) => ({
       ...prev,
@@ -61,7 +55,6 @@ export default function Page() {
     }));
   };
 
-  // Deleta tarefa
   const handleDelete = (dateKey: string, id: string) => {
     setTasks((prev) => ({
       ...prev,
@@ -77,15 +70,15 @@ export default function Page() {
     );
 
   return (
-    <div className="w-screen h-screen flex flex-col md:flex-row overflow-hidden bg-black">
+    <div className="w-screen min-h-screen flex flex-col md:flex-row bg-black">
       {/* Calendário */}
-      <div className="md:basis-[80%] flex-1 flex flex-col bg-white shadow-lg overflow-hidden p-6">
+      <div className="md:basis-[75%] flex-1 flex flex-col bg-white shadow-lg overflow-hidden">
         <CalendarHeader
           date={currentMonth}
           onPrev={() => setCurrentMonth(prevMonth(currentMonth))}
           onNext={() => setCurrentMonth(nextMonth(currentMonth))}
         />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col m-5 overflow-hidden">
           <CalendarGrid
             days={days}
             currentMonth={currentMonth}
@@ -97,15 +90,15 @@ export default function Page() {
       </div>
 
       {/* Painel de tarefas */}
-      <div className="md:basis-[20%] w-full md:w-auto h-[35vh] md:h-full flex flex-col bg-white rounded-t-2xl md:rounded-none md:rounded-r-2xl shadow-lg">
-        <TaskPanel
-          date={selectedDate}
-          tasks={tasks}
-          onToggleDone={handleToggleDone}
-          onDelete={handleDelete}
-          onAddTask={handleAddTask}
-        />
-      </div>
+        <div className="md:basis-[25%] h-screen w-full md:w-auto flex flex-col bg-white shadow-lg md:h-screen">
+          <TaskPanel
+            date={selectedDate}
+            tasks={tasks}
+            onToggleDone={handleToggleDone}
+            onDelete={handleDelete}
+            onAddTask={handleAddTask}
+          />
+        </div>
     </div>
   );
 }

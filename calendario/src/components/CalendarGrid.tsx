@@ -17,7 +17,7 @@ export default function CalendarGrid({
   return (
     <div className="flex flex-col h-full">
       {/* Cabeçalho dias da semana */}
-      <div className="grid grid-cols-7 gap-3 mb-3 shrink-0">
+      <div className="grid grid-cols-7 mb-3 shrink-0">
         {weekDays.map(w => (
           <div
             key={w}
@@ -35,7 +35,7 @@ export default function CalendarGrid({
 
       {/* Grid de dias */}
       <div
-        className="grid grid-cols-7 gap-3 flex-1"
+        className="grid grid-cols-7 gap-3 flex-1 p-3"
         style={{ gridTemplateRows: `repeat(${numRows}, 1fr)` }} // ⚡ altura ajustável
       >
         {days.map((d: Date) => (

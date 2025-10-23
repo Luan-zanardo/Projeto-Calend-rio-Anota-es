@@ -13,28 +13,34 @@ export default function CalendarHeader({
   onNext: () => void;
 }) {
   return (
-    <div className="w-full flex justify-center mb-8 mt-6 px-3">
-      <div className="flex items-center justify-center gap-3 sm:gap-6 md:gap-8 lg:gap-12 max-w-xl w-full">
+    <div className="w-full flex justify-center my-6 px-4">
+      <div className="flex items-center justify-between gap-4 sm:gap-6 md:gap-8 w-full max-w-4xl">
         
         {/* Botão anterior */}
         <button
           onClick={onPrev}
-          className="shrink-0 px-4 py-3 rounded-full bg-gray-200 shadow-sm text-2xl sm:text-3xl md:text-4xl hover:scale-105 transition-transform"
+          className="
+            flex items-center justify-center
+            w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
+            rounded-xl bg-gray-100 text-black font-bold
+            shadow-md hover:bg-gray-200 hover:scale-105 transition-transform duration-200
+          "
         >
           ◀
         </button>
 
-        {/* Nome do mês */}
+        {/* Container do mês (somente visual) */}
         <div
           className="
-            flex-1
-            text-center
-            bg-gray-200
-            rounded-full
-            py-3 sm:py-4
-            text-xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-wide
-            max-w-[320px] md:max-w-[400px] lg:max-w-[460px]
-            overflow-hidden
+            flex-1 text-center
+            bg-gray-100
+            rounded-3xl
+            py-4 sm:py-5 md:py-6
+            text-2xl sm:text-3xl md:text-4xl lg:text-5xl
+            font-extrabold tracking-wide
+            shadow-inner
+            transition-transform duration-200
+            select-none
           "
         >
           {format(date, "MMMM", { locale: ptBR }).toUpperCase()}
@@ -43,7 +49,12 @@ export default function CalendarHeader({
         {/* Botão próximo */}
         <button
           onClick={onNext}
-          className="shrink-0 px-4 py-3 rounded-full bg-gray-200 shadow-sm text-2xl sm:text-3xl md:text-4xl hover:scale-105 transition-transform"
+          className="
+            flex items-center justify-center
+            w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20
+            rounded-xl bg-gray-100 text-black font-bold
+            shadow-md hover:bg-gray-200 hover:scale-105 transition-transform duration-200
+          "
         >
           ▶
         </button>
