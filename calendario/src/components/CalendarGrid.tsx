@@ -45,7 +45,7 @@ export default function CalendarGrid({
             currentMonth={currentMonth}
             selectedDate={selectedDate}
             onSelect={onSelect}
-            hasTasks={Boolean(tasksByDate[d.toISOString()?.slice(0,10)])}
+            hasTasks={tasksByDate[d.toISOString().slice(0,10)]?.length > 0}
           />
         ))}
       </div>
