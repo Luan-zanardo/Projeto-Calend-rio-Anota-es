@@ -8,14 +8,23 @@ import { format } from "date-fns";
 import { supabase } from "@/lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
+interface SupabaseTask {
+  id: string;
+  user_id: string;
+  date: string;
+  text: string;
+  description?: string;
+  done?: boolean;
+}
+
 export default function Page() {
   const router = useRouter();
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [days, setDays] = useState<Date[]>([]);
   const [tasks, setTasks] = useState<Record<string, Task[]>>({});
 
-  // Checa usuário e carrega tarefas
+  // 🔹 Carregar tarefas do usuário
   useEffect(() => {
     const loadTasks = async () => {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -36,7 +45,7 @@ export default function Page() {
       }
 
       const tasksByDate: Record<string, Task[]> = {};
-      data.forEach((t: any) => {
+      data.forEach((t: SupabaseTask) => {
         const key = format(new Date(t.date), "yyyy-MM-dd");
         if (!tasksByDate[key]) tasksByDate[key] = [];
         tasksByDate[key].push({
@@ -53,12 +62,11 @@ export default function Page() {
     loadTasks();
   }, [router]);
 
-  // Gera dias do calendário
   useEffect(() => {
     setDays(getCalendarDays(currentMonth));
   }, [currentMonth]);
 
-  // Adicionar tarefa
+  // Adicionar
   const handleAddTask = async (text: string, description?: string) => {
     const { data: sessionData } = await supabase.auth.getSession();
     const userId = sessionData?.session?.user?.id;
@@ -81,7 +89,6 @@ export default function Page() {
   // Editar
   const handleEditTask = async (id: string, text: string, description?: string) => {
     const key = format(selectedDate, "yyyy-MM-dd");
-
     await supabase.from("tasks").update({ text, description }).eq("id", id);
 
     setTasks((prev) => ({
@@ -90,7 +97,7 @@ export default function Page() {
     }));
   };
 
-  // Toggle concluída
+  // Alternar concluída
   const handleToggleDone = async (dateKey: string, id: string) => {
     const task = tasks[dateKey].find((t) => t.id === id);
     if (!task) return;
@@ -105,7 +112,7 @@ export default function Page() {
     }));
   };
 
-  // Delete
+  // Excluir
   const handleDelete = async (dateKey: string, id: string) => {
     await supabase.from("tasks").delete().eq("id", id);
 
@@ -117,7 +124,6 @@ export default function Page() {
 
   return (
     <div className="w-screen min-h-screen flex flex-col md:flex-row bg-black">
-      {/* Calendário */}
       <div className="md:basis-[75%] flex-1 flex flex-col bg-white shadow-lg overflow-hidden">
         <CalendarHeader
           date={currentMonth}
@@ -136,7 +142,6 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Painel de tarefas */}
       <div className="md:basis-[25%] h-screen w-full md:w-auto flex flex-col bg-white shadow-lg md:h-screen">
         <TaskPanel
           date={selectedDate}

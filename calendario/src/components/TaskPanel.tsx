@@ -66,7 +66,7 @@ export default function TaskPanel({
 
   return (
     <aside className="flex flex-col bg-white shadow-md md:h-full max-h-full">
-      {/* Cabeçalho com botão sair */}
+      {/* Cabeçalho */}
       <div className="shrink-0 text-center text-4xl md:text-5xl font-bold text-white bg-blue-600 py-5 relative">
         <button
           onClick={handleLogout}
@@ -79,7 +79,7 @@ export default function TaskPanel({
         <span className="block text-lg">{format(date, "MMMM yyyy")}</span>
       </div>
 
-      {/* Lista */}
+      {/* Lista de tarefas */}
       <div className="flex-1 overflow-y-auto p-4">
         {list.length === 0 && (
           <div className="text-gray-500 text-sm text-center mt-4">Sem tarefas</div>
@@ -105,7 +105,11 @@ export default function TaskPanel({
                     onChange={() => onToggleDone(key, t.id)}
                     className="w-6 h-6 mt-1 rounded-full border-2 border-gray-400 bg-gray-100 checked:bg-blue-500 checked:border-blue-500 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110 shrink-0"
                   />
-                  <span className={`block text-base font-semibold ${t.done ? "line-through text-gray-400" : "text-gray-800"}`}>
+                  <span
+                    className={`block text-base font-semibold ${
+                      t.done ? "line-through text-gray-400" : "text-gray-800"
+                    }`}
+                  >
                     {t.text}
                   </span>
                 </div>
@@ -132,7 +136,9 @@ export default function TaskPanel({
                   ref={descRef}
                   className="overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-40"
                 >
-                  <p className="text-sm text-gray-600 mt-3 leading-relaxed">{t.description}</p>
+                  <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+                    {t.description}
+                  </p>
                 </div>
               )}
             </li>
